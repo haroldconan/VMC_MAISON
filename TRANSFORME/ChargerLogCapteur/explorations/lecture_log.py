@@ -50,5 +50,22 @@ df = df.withColumn("temperature",regexp_replace(col("temperature"), ",", ".").ca
 df = df.withColumn("temperature",round(col("temperature"),2))
 
 df = df.withColumn("chrono",expr(f"timestamp('{dateDebut}') + chrono * INTERVAL 1 SECOND"))
+
+df.createOrReplaceTempView("df_log_vmc")
+
 #df.show()
 display(df)
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS log_vmc;
+# MAGIC create table log_vmc as 
+# MAGIC select
+# MAGIC *
+# MAGIC from df_log_vmc;
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from log_vmc;
